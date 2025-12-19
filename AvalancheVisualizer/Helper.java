@@ -18,27 +18,6 @@ final public class Helper{
                 System.out.println("");
             }
         } else {
-            // System.out.println(data.length);
-            // int c = 0;
-            // outer: for (int blockNumber=0; blockNumber<(int)Math.ceil(data.length/64.00); blockNumber++){
-            //     for (int pieceNumber=0; pieceNumber<bytePerLine; pieceNumber++){
-            //         for (int j=0; j<4; j++){
-            //                 int index = 64 * blockNumber + 4 * pieceNumber + j;
-            //                 if (index >= data.length){
-            //                     System.out.println("");
-            //                     break outer;
-            //                 }
-            //                 c++;
-            //                 System.out.printf("%02x ",data[index]);
-            //                 // System.out.printf("%s ", String.format("%8s", Integer.toBinaryString(data[index] & 0xFF)).replace(' ', '0'));
-            //         }
-            //         System.out.print(" ");
-            //         if (pieceNumber%(bytePerLine/4)==(bytePerLine/4)-1){
-            //             System.out.println("");
-            //         }
-            //     }
-            //     System.out.println(c);
-            // }
             int dataIndex = 0;
             int lineNo = 0;
             while (dataIndex < data.length) {
@@ -97,7 +76,6 @@ final public class Helper{
     }
     public static StringBuffer toBinary(long num, int minLength){
         StringBuffer result = new StringBuffer(minLength);
-        // System.out.println(result.length());
         String data = Long.toBinaryString(num);
         for (int i=0; i<minLength-data.length(); i++){
             result.append("0");
@@ -113,9 +91,6 @@ final public class Helper{
     }
     public static int hammingDistance(long x, long y){
         if (x==y)return 0;
-        // int c=0;
-        // for(int i=63; i>=0; i--)if (((x>>>i) & 1l)!=((y>>>i) & 1l))c++;
-        // return c;
         return Long.bitCount(x^y);
     }
     public static int hammingDistance(String x, String y, int radix) {
@@ -133,14 +108,6 @@ final public class Helper{
         int distance = a.xor(b).bitCount();
         return (distance * 100.0) / totalBits;
     }
-    
-    // public static int toBytes(int bits){return bits/8;}
-    // public static int toBits(int bytes){return bytes*8;}
-
-    // public static void main(String[]args){
-    //     System.out.println(hammingDistance(0, -14));
-    // }
-
     public static boolean hasOnlyValidCharacters(String str, String validChars){
         for (char c: str.toCharArray()){
             if(str.indexOf(c)==-1)return false;

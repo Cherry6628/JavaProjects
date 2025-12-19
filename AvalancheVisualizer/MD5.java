@@ -22,39 +22,8 @@ final public class MD5{
 
 
     static InternalWorkingVariableHistory hash(String str){
-        
-        // final int 
-        // a0 = 0x67452301,
-        // b0 = 0xEFCDAB89,
-        // c0 = 0x98BADCFE,
-        // // d0 = 0x10325476;
-        // final int roundCount = 4;
-        // for (int i=0; i<64; i++){
-        //     K[i] = (int)Math.floor(Math.abs(Math.sin(i+1)) * Math.pow(2, 32));
-        // }
-        // System.out.println(Arrays.toString(k));
-
         InternalWorkingVariableHistory ilwvh = new InternalWorkingVariableHistory(null, 64);
-
         byte[] message = Helper.encodeToUTF8(str);
-
-        // System.out.println("Bytes: ");
-        // Helper.hexDump(message, 16, true);
-        // Helper.hexDump(message, false);
-
-        // System.out.println("Bytes after padding: ");
-        // {
-        //     // byte[] padded = new byte[56+64*(int)Math.floor(message.length/56.0) + 8];
-        //     byte[] padded = new byte[((message.length + 8) / 64 + 1) * 64];
-        //     for (int i=0; i<message.length;i++){
-        //         padded[i]=message[i];
-        //     }
-        //     padded[message.length]=(byte)0x80;
-        //     for (int i=0; i<8; i++){
-        //         padded[padded.length-8+i] = (byte)(((long)(message.length*8) >>> (8*i))&0xFF);
-        //     }
-        //     message=padded;
-        // }
         {
             byte[] padded = Helper.padData(message, 64, 8);
             padded[message.length]=(byte)0x80;
@@ -63,11 +32,6 @@ final public class MD5{
             }
             message = padded;
         }
-        
-        // Helper.hexDump(message, 16, true);
-        // System.out.println("\n\n");
-        // byte[][] eachRounds = new byte[4][message.length];
-        // System.out.println(Arrays.deepToString(eachRounds));
         int 
         a0 = 0x67452301,
         b0 = 0xEFCDAB89,
@@ -77,18 +41,8 @@ final public class MD5{
             int[] M = new int[16];
             for (int j=0; j<16; j++){
                 int start = blockIndex * 64 + j*4;
-                // M[j] = (((message[start] & 0xFF)) |
-                //     ((message[start+1] & 0xFF) << 8) |
-                //     ((message[start+2] & 0xFF) << 16) |
-                //     ((message[start+3] & 0xFF) << 24));
                 M[j] = Helper.littleEndianBytesToInt(message, start);
             }
-            // for (int j=0; j<M.length; j++){
-            //     String temp = Integer.toBinaryString(M[j]);
-            //     System.out.printf("%32s     ","0".repeat(32-temp.length())+temp);
-            //     // System.out.println("");
-            //     if (j%4==3)System.out.println("");
-            // }
 
             int A = a0;
             int B = b0;
@@ -129,7 +83,6 @@ final public class MD5{
                         digest[i*4 + 3] = (byte)((n >>> 24) & 0xFF);
                         
                     }
-                    // Helper.hexDump(digest, 16, false);
                 }
                     ilwvh.addData(new long[]{A, B, C, D});
             }
@@ -153,8 +106,6 @@ final public class MD5{
         }
 
         StringBuffer hex = new StringBuffer();
-        // System.out.println("Final Bytes: ");
-        // Helper.hexDump(digest, 16, true);
         for (byte b : digest) hex.append(String.format("%02x", b & 0xFF));
         ilwvh.setResult(hex.toString());
         return ilwvh;

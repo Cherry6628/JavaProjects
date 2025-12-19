@@ -1,60 +1,29 @@
 package avalanche;
 
-// import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-// import java.util.Arrays;
 import java.util.Random;
 
 final public class ExternalAvalanche extends InternalAvalanche{
     public static long flipBit(long n, int bitIndexToFlip){
-        // System.out.println(n);
         long mask = 1<<bitIndexToFlip;
         return n^mask;
     }
-    // public static long flipBit(String hexadec, int bitIndexToFlip)
-    // throws NumberFormatException{
-    //     return flipBit(Long.parseLong(hexadec, 16), bitIndexToFlip);
-    // }
     public static int bitLength(long n) {return (int)Math.floor(Math.log10(n)/Math.log10(2))+1;}
     public static int bitLength(String hexadec) {return hexadec.length() * 4;}
     public static int bitLengthOfNormalString(String str){
         return Helper.encodeToUTF8(str).length*8;
     }
-    // public static void main(String[] args){
-    //     System.out.println(flipBit("abcdefabcdef", 32));
-    // }
-    // public static double findHammingDistanceInPercent(long num, int bitIndexToFlip){
-    //     return Helper.hammingDistanceInPercent(num, flipBit(num, bitIndexToFlip));
-    // }
     public static String flipString(String input, int bit){
         byte[] arr = Helper.encodeToUTF8(input);
-        // System.out.println(Arrays.toString(arr));
         int index = arr.length-1-(bit/8);
         if (index>=0)arr[index]=(byte)flipBit(arr[index],bit%8);
-        // System.out.println(Arrays.toString(arr));
         String flipped = new String(arr, StandardCharsets.UTF_8);
-        // System.out.println(flipped);
         return flipped;
     }
 
     private static String bar(double percent, int length) {
         return percentageColor(percent)+"█".repeat((int)(percent*length/100))+("░".repeat(length-(int)(percent*length/100)))+" - "+formatter.format(percent*0.01)+zeroCode;
     }
-    // public static void main(String[]args){
-    //     // showStrictAvalancheCriterion("", 3);
-    //     String s = "Hhhello World OMGGGGGGGGGGafasdfasdfasdfasfdasdfasfdasdfasdf67uioyty6786578976546kjhgjokjhgljhgjkjhadsfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasasdfG".repeat(100);
-    //     // int bit = 50;
-    //     // showMD5ExternalAvalanche(s, bit, true);
-    //     // showSHAExternalAvalanche(s, 224, bit, true);
-    //     // showSHAExternalAvalanche(s, 256, bit, true);
-    //     // showSHAExternalAvalanche(s, 384, bit, true);
-    //     // showSHAExternalAvalanche(s, 512, bit, true);
-    //     boolean shallPrint = false;
-    //     // runSACTestWithSHA(s, 224, shallPrint);
-    //     runRandomMD5ExternalAvalancheTest(s, 10000, shallPrint);
-    // }
-
-    
     public static double showMD5ExternalAvalanche(String input, int bitToFlip, boolean displayLog, boolean shallPrint) {
         String flipped = flipString(input, bitToFlip);
         String hash1 = MD5.hash(input).result();

@@ -1,6 +1,5 @@
 package avalanche;
 import java.util.Arrays;
-// import 
 
 public class SHA {
     private static final long[] K256 = {
@@ -40,7 +39,6 @@ public class SHA {
     private static final int[] H256 = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19}; 
     private static final long[] H384 = {0xcbbb9d5dc1059ed8L, 0x629a292a367cd507L, 0x9159015a3070dd17L, 0x152fecd8f70e5939L, 0x67332667ffc00b31L, 0x8eb44a8768581511L, 0xdb0c2e0d64f98fa7L, 0x47b5481dbefa4fa4L}; 
     private static final long[] H512 = {0x6a09e667f3bcc908L, 0xbb67ae8584caa73bL, 0x3c6ef372fe94f82bL, 0xa54ff53a5f1d36f1L, 0x510e527fade682d1L, 0x9b05688c2b3e6c1fL, 0x1f83d9abfb41bd6bL, 0x5be0cd19137e2179L}; 
-    // private static final long[] H512_256 = {0x22312194fc2bf72cL, 0x9f555fa3c84c64c2L, 0x2393b86b6f53b151L, 0x963877195940eabdL, 0x96283ee2a88effe3L, 0xbe5e1e2553863992L, 0x2b0199fc2c85b8aaL, 0x0eb72ddc81c52ca2L}; 
     
     private static int rotr32(int x, int n) {
         return (x >>> n) | (x << (32 - n));
@@ -53,7 +51,6 @@ public class SHA {
     public static InternalWorkingVariableHistory hash(String str, int bits){
         if (bits!=224 && bits!=256 && bits!=384 && bits!=512){return null;}
         byte[] message = Helper.encodeToUTF8(str);
-        // System.out.println("Original Data: "+str);
         int rounds=0;
         {
             long originalBitLength = (long)message.length * 8;  
@@ -80,8 +77,6 @@ public class SHA {
                 message = padded;
             }
         }
-        // System.out.println("After Padding: ");
-        // Helper.hexDump(message, 32, true); 
         int blockSize = (bits <= 256) ? 64 : 128;
         InternalWorkingVariableHistory ilwvh = new InternalWorkingVariableHistory(null, rounds);
         if (bits <= 256) {

@@ -10,11 +10,7 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
     }
     public final static String zeroCode = "\033[0m";
     public static String percentageColor(double percent){
-        // if(percent<25)return getAnsiRgbBackgroundCode(255, 0, 0);
-        // if(percent<50)return getAnsiRgbBackgroundCode(255, 165, 0);
-        // return getAnsiRgbBackgroundCode(0, 255, 0);
         double inc = 1;
-        // return getAnsiRgbBackgroundCode(38, (int)Math.min((100.0-percent)*2.55*inc, 255), (int)Math.min(percent*2.55*inc, 255), 0);
         double distanceFromIdeal = Math.abs(percent - 50);
         int 
         red   = (int)Math.min(distanceFromIdeal * 5.1 * inc, 255),
@@ -29,10 +25,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
     private static double compareTwoHistoriesFullHex(long[][] historyData, int h1, int h2){   
         long[] his1 = historyData[h1];
         long[] his2 = historyData[h2];
-        // System.out.println(Helper.toHexaDec(his1[0], 16));
-        // System.out.println(Helper.toHexaDec(his2[0], 16));
-        // for (int )
-        // System.out.println(Helper.percentageDifference(his1[0], his2[0])+" %");
         double currentRound = 0.0;
         double[] diffs = new double[his1.length];
         for (int i=0; i<his1.length; i++){
@@ -40,20 +32,15 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
             currentRound+=diffs[i];
 
         }
-        // System.out.print("Round "+String.format("%2d", h1)+": "+((h1==0?" 0.0000":(currentRound/his1.length)))+" % ");
         System.out.print("Round "+String.format("%2d", h1)+": "+percentageColor(h1!=0?currentRound/his1.length:0)+formatter.format((h1==0?0:(currentRound*0.01/his1.length)))+zeroCode+"   | ");
         for (int i=0; i<his1.length; i++){
             System.out.print(percentageColor(diffs[i])+Helper.toHexaDec(his1[i], 16)+zeroCode+" ");
         }
-        // System.out.println("");
         System.out.print("\nRound "+String.format("%2d", h2)+": "+percentageColor(currentRound/his1.length)+formatter.format(currentRound*0.01/his1.length)+zeroCode+"   | ");
         for (int i=0; i<his2.length; i++){
-            
             System.out.print(percentageColor(diffs[i])+Helper.toHexaDec(his2[i], 16)+zeroCode+" ");
-            
         }
         return currentRound/his1.length;
-        // System.out.println("");
     }
     private static double compareTwoHistoriesBarGraph(long[][] historyData, int h1, int h2, int length){
         double avalanche = 0.0;
@@ -64,7 +51,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
             avalanche+=Helper.hammingDistanceInPercent(his1[i], his2[i]);
         }
         avalanche/=his1.length;
-        // System.out.println(percentageColor(avalanche)+"█".repeat((int)(avalanche*length/100))+("░".repeat(length-(int)(avalanche*length/100)))+" - "+formatter.format(avalanche*0.01)+zeroCode);
         System.out.println(bar(avalanche, length));
         return avalanche;
     }
@@ -92,7 +78,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
         }
         System.out.println(percentageColor(avalanche/his1.length)+"      - Total: "+formatter.format(avalanche*0.01/his1.length)+zeroCode);
         avalanche/=his1.length;
-        // System.out.println(percentageColor(avalanche)+"█".repeat((int)(avalanche*length/100))+("░".repeat(length-(int)(avalanche*length/100)))+" - "+formatter.format(avalanche*0.01)+zeroCode);
         return avalanche;
     }
     private static double showCumultativeAvalancheTotal(long[][] historyData, int h1, boolean shallPrint){
@@ -107,7 +92,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
         if(shallPrint)System.out.print("Round "+String.format("%2d", h1+1)+" : ");
         for (int i=0; i<his1.length; i++){
             double cur = Helper.hammingDistanceInPercent(his1[i], his2[i]);
-            // System.out.print(String.format("%10s", formatter.format(cur)));
             avalanche+=cur;
         }
         if(shallPrint)System.out.println(percentageColor(avalanche/his1.length)+formatter.format(avalanche*0.01/his1.length)+zeroCode);
@@ -126,10 +110,8 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
         System.out.print("Round "+String.format("%2d", h1+1)+" : ");
         for (int i=0; i<his1.length; i++){
             double cur = Helper.hammingDistanceInPercent(his1[i], his2[i]);
-            // System.out.print(String.format("%10s", formatter.format(cur)));
             avalanche+=cur;
         }
-        // System.out.println(percentageColor(avalanche/his1.length)+("█".repeat((int)(avalanche*length/(100*his1.length)))+("░".repeat(length-(int)(avalanche*length/(100*his1.length))))+" - ")+formatter.format(avalanche*0.01/his1.length)+zeroCode);
         System.out.println(bar(avalanche/his1.length, length));
 
         return avalanche/his1.length;
@@ -178,7 +160,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
                 )+" | ");
                 data[i]=compareTwoHistories(history, traced+i, traced+i+1, false);
                 total+=data[i];
-                // System.out.println(" "+dataPerRow+" "+traced%dataPerRow);
             }
             
             System.out.print("\nChange: ");
@@ -233,7 +214,6 @@ sealed public class InternalAvalanche permits ExternalAvalanche{
                 System.out.print(String.format("%"+(format.length()+2)+"d",traced+i+1)+" | ");
                 total=showCumultativeAvalancheTotal(history, traced+i, false);
                 data[i]=total;
-                // System.out.println(" "+dataPerRow+" "+traced%dataPerRow);
             }
             
             System.out.print("\nChange: ");

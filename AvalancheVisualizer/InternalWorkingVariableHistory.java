@@ -14,9 +14,6 @@ public final class InternalWorkingVariableHistory {
     long[][] history(){
         return this.longHistory;
     }
-    // String longHistory(){
-    //     return Arrays.deepToString(longHistory)+"\n"+this.result+"\n\n";
-    // }
     String result(){return this.result;}
     
     boolean addData(long[] arr){
